@@ -19,6 +19,20 @@ function mapIncident(snapshot) {
   return { id: snapshot.id, ...snapshot.data() };
 }
 
+function getIncidentDateValue(incident) {
+  const value = incident.fechaCreacion;
+
+  if (!value) return 0;
+  if (typeof value.toMillis === "function") return value.toMillis();
+  if (typeof value.toDate === "function") return value.toDate().getTime();
+
+  return new Date(value).getTime() || 0;
+}
+
+function sortByCreationDateDesc(incidents) {
+  return [...incidents].sort((a, b) => getIncidentDateValue(b) - getIncidentDateValue(a));
+}
+
 export async function createIncident(payload) {
   const docRef = await addDoc(incidentsRef, {
     ...payload,
@@ -42,9 +56,11 @@ export async function getAllIncidents() {
 }
 
 export async function getUserIncidents(userId) {
-  const q = query(incidentsRef, where("usuarioId", "==", userId), orderBy("fechaCreacion", "desc"));
+  if (!userId) return [];
+
+  const q = query(incidentsRef, where("usuarioId", "==", userId));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(mapIncident);
+  return sortByCreationDateDesc(snapshot.docs.map(mapIncident));
 }
 
 export async function updateIncidentStatus(incident, estado) {
