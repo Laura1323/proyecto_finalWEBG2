@@ -1,4 +1,5 @@
-// Reports.jsx
+import Statistics from "./Statistics";
+
 export default function Reports() {
-  return <div>Reports</div>;
+  return <Statistics />;
 }

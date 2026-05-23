@@ -1,2 +1,1 @@
-// firestore.js
-// Funciones de Firestore
+export { db } from "./config";

@@ -1,2 +1,1 @@
-// auth.js
-// Funciones de autenticación con Firebase
+export { auth } from "./config";

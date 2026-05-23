@@ -1,5 +1,13 @@
-// ProtectedRoute.jsx
-import { Navigate } from "react-router-dom";
-export default function ProtectedRoute({ isAuth, children }) {
-  return isAuth ? children : <Navigate to="/login" />;
+import { Navigate, Outlet } from "react-router-dom";
+import Loader from "./Loader";
+import { useAuth } from "../../hooks/useAuth";
+
+export default function ProtectedRoute({ adminOnly = false }) {
+  const { user, loading, isAdmin } = useAuth();
+
+  if (loading) return <Loader text="Validando acceso..." />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (adminOnly && !isAdmin) return <Navigate to="/dashboard" replace />;
+
+  return <Outlet />;
 }

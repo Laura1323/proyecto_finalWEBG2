@@ -1,4 +1,5 @@
-// Home.jsx
+import { Navigate } from "react-router-dom";
+
 export default function Home() {
-  return <div>Home Page</div>;
+  return <Navigate to="/dashboard" replace />;
 }

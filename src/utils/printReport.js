@@ -1,2 +1,3 @@
-// printReport.js
-// Funciones para imprimir reportes
+export function printReport() {
+  window.print();
+}
